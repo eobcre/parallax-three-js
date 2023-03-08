@@ -37,7 +37,7 @@ function mouseHandler(event) {
   mouse.y = 1 - y / h;
 }
 
-const geometry = new THREE.PlaneGeometry(8, 5);
+const geometry = new THREE.PlaneGeometry(9, 5);
 const material = new THREE.ShaderMaterial({
   uniforms: {
     uTex: { value: await loadTex('img/img.jpg') },
