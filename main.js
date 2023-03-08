@@ -13,7 +13,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 // load img, pass texture to shader
-async function loadTexture(url) {
+async function loadTex(url) {
   const loader = new THREE.TextureLoader();
   const texture = await loader.loadAsync(url);
   return texture;
@@ -37,8 +37,11 @@ const material = new THREE.ShaderMaterial({
 
   fragmentShader: `
   varying vec2 vUv;
+  uniform sampler2D uTex;
+
   void main() {
-    vec4 color = vec4(vUv, 0.0, 1.0);
+    vec4 tex = texture2D(uTex, vUv);
+    vec4 color = vec4(tex);
     gl_FragColor = color;
   }
   `,
