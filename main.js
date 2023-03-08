@@ -37,10 +37,11 @@ function mouseHandler(event) {
   mouse.y = 1 - y / h;
 }
 
-const geometry = new THREE.PlaneGeometry(2, 1);
+const geometry = new THREE.PlaneGeometry(8, 5);
 const material = new THREE.ShaderMaterial({
   uniforms: {
     uTex: { value: await loadTex('img/img.jpg') },
+    uTexDepth: { value: await loadTex('img/img-map.jpg') },
     uMouse: { value: mouse },
   },
 
@@ -55,12 +56,13 @@ const material = new THREE.ShaderMaterial({
   fragmentShader: `
   varying vec2 vUv;
   uniform sampler2D uTex;
+  uniform sampler2D uTexDepth;
   uniform vec2 uMouse;
 
   void main() {
-    vec4 tex = texture2D(uTex, vUv);
-    vec4 color = vec4(tex);
-    gl_FragColor = vec4(uMouse, 1.0, 1.0);
+    vec4 texDepth = texture2D(uTexDepth, vUv);
+    vec4 color = texture2D(uTex, vUv + (uMouse -vec2(0.5)) * 0.02 * texDepth.r);
+    gl_FragColor = color;
   }
   `,
 });
@@ -73,8 +75,8 @@ camera.position.z = 5;
 function animate() {
   requestAnimationFrame(animate);
 
-  //   cube.rotation.x += 0.01;
-  //   cube.rotation.y += 0.01;
+  // cube.rotation.x += 0.01;
+  // cube.rotation.y += 0.01;
 
   renderer.render(scene, camera);
 }
