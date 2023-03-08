@@ -12,6 +12,13 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+// load img, pass texture to shader
+async function loadTexture(url) {
+  const loader = new THREE.TextureLoader();
+  const texture = await loader.loadAsync(url);
+  return texture;
+}
+
 const geometry = new THREE.PlaneGeometry(2, 1);
 const material = new THREE.ShaderMaterial({
   uniforms: {
