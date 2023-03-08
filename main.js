@@ -19,11 +19,12 @@ async function loadTexture(url) {
   return texture;
 }
 
+// mouse position to shader
+
 const geometry = new THREE.PlaneGeometry(2, 1);
 const material = new THREE.ShaderMaterial({
   uniforms: {
-    time: { value: 1.0 },
-    resolution: { value: new THREE.Vector2() },
+    uTex: { value: await loadTex('img/img.jpg') },
   },
 
   vertexShader: `
