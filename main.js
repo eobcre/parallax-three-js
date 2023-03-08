@@ -20,11 +20,28 @@ async function loadTex(url) {
 }
 
 // mouse position to shader
+const canvas = document.querySelector('canvas');
+canvas.addEventListener('mousemove', mouseHandler);
+const mouse = new THREE.Vector2();
+
+// mouse function
+function mouseHandler(event) {
+  const el = event.currentTarget;
+
+  const x = event.clientX;
+  const y = event.clientY;
+  const w = el.offsetWidth;
+  const h = el.offsetHeight;
+
+  mouse.x = x / w;
+  mouse.y = 1 - y / h;
+}
 
 const geometry = new THREE.PlaneGeometry(2, 1);
 const material = new THREE.ShaderMaterial({
   uniforms: {
     uTex: { value: await loadTex('img/img.jpg') },
+    uMouse: { value: mouse },
   },
 
   vertexShader: `
@@ -38,11 +55,12 @@ const material = new THREE.ShaderMaterial({
   fragmentShader: `
   varying vec2 vUv;
   uniform sampler2D uTex;
+  uniform vec2 uMouse;
 
   void main() {
     vec4 tex = texture2D(uTex, vUv);
     vec4 color = vec4(tex);
-    gl_FragColor = color;
+    gl_FragColor = vec4(uMouse, 1.0, 1.0);
   }
   `,
 });
